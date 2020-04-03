@@ -1,26 +1,13 @@
-const express = require('express');
-const app = express()
-const bodyParser = require('body-parser');
 const AWS = require('aws-sdk');
-var createError = require('http-errors');
-var path = require('path');
 const ses = new AWS.SES();
 const dynamoDB = new AWS.DynamoDB();
 const route53 = new AWS.Route53();
-
-app.use(bodyParser.json())
-
-// const port = 5000
-// app.listen(port, () => {
-//     console.log("Running on port " + port);
-// });;
 
 var creds = new AWS.Credentials({
     accessKeyId: process.env.aws_access_key, secretAccessKey: process.env.aws_secret_key
 });
 
 AWS.config.credentials = creds;
-
 
 exports.handler = (event, context) => {
     console.log('Received event:', JSON.stringify(event, null, 4));
@@ -87,8 +74,4 @@ exports.handler = (event, context) => {
             });
         }
     });
-
 };
-
-
-module.exports = app;
