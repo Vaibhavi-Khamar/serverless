@@ -12,12 +12,10 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-     
+          key: v1-dependencies-{{ checksum "package.json" }}    
       - run:
           name: Install packages
           command: sudo apt-get update && sudo apt-get install wget zip unzip && sudo apt-get install python-dev && sudo apt-get install python-pip -y
