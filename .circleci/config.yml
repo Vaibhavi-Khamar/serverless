@@ -30,7 +30,7 @@ jobs:
             aws configure set aws_secret_access_key ${AWS_SECRET_KEY}
       - run:
           name: Zip Lambda folder
-          command: zip -r serverless.zip app.js package.json
+          command: zip -r serverless.zip index.js package.json
       - run:
           name: Upload Lambda to S3 & update function code from S3
           command: |
