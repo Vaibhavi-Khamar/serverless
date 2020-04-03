@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12.14.1
+      - image: circleci/python:3.6.4
+    working_directory: ~/serverless
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+     
+      - run:
+          name: Install packages
+          command: sudo apt-get update && sudo apt-get install wget zip unzip && sudo apt-get install python-dev && sudo apt-get install python-pip -y
+      - run:
+          name: Install awscli
+          command: |
+            sudo pip install awscli
+            aws configure set default.region us-east-1
+            aws configure set aws_access_key_id ${AWS_ACCESS_KEY}
+            aws configure set aws_secret_access_key ${AWS_SECRET_KEY}
+      - run:
+          name: Zip Lambda folder
+          command: zip -r serverless.zip app.js package.json
+      - run:
+          name: Upload Lambda to S3 & update function code from S3
+          command: |
+                  pwd
+                  ls -al
+                  aws s3 cp serverless.zip s3://${LAMBDA_S3_BUCKET} --sse
