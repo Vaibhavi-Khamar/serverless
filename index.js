@@ -21,7 +21,7 @@ exports.handler = (event, context) => {
     const getItemObject = {
         TableName: 'csye6225',
         Key: {
-            'id': { S: email }
+            'email': { S: email }
         }
     };
 
@@ -32,8 +32,7 @@ exports.handler = (event, context) => {
             const putItemObject = {
                 TableName: 'csye6225',
                 Item: {
-                    id: { S: email },
-                    token: { S: context.awsRequestId },
+                    email: { S: email },
                     ttl: { N: (Math.floor(Date.now() / 1000) + 1800).toString() }
                 }
             };
