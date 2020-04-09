@@ -35,3 +35,4 @@ jobs:
                   pwd
                   ls -al
                   aws s3 cp serverless.zip s3://${LAMBDA_S3_BUCKET} --sse
+                  aws lambda update-function-code --function-name myfunction --s3-bucket ${LAMBDA_S3_BUCKET} --s3-key serverless.zip
